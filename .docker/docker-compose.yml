@@ -22,8 +22,8 @@ services:
     volumes:
       - '../:/var/www'
     environment:
-      XDEBUG_CONFIG: "remote_host=$XDEBUG_REMOTE_HOST remote_enable=1 remote_autostart=0 remote_port=$XDEBUG_REMOTE_PORT"
-      PHP_IDE_CONFIG: "serverName=$XDEBUG_SERVER"
+      XDEBUG_CONFIG: "remote_host=172.22.0.1 remote_enable=1 remote_autostart=0 remote_port=9000"
+      PHP_IDE_CONFIG: "serverName=xdebug_server"
     depends_on:
       - postgres
     networks:
