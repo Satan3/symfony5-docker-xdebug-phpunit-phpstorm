@@ -7,7 +7,10 @@
         "php": ">=7.3.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-redis": "*",
         "composer/package-versions-deprecated": "1.11.99.1",
+        "doctrine/annotations": "^1.12",
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
@@ -20,11 +23,11 @@
         "symfony/framework-bundle": "5.2.*",
         "symfony/monolog-bundle": "^3.6",
         "symfony/security-bundle": "5.2.*",
+        "symfony/string": "5.2.*",
         "symfony/twig-pack": "^v1.0.1",
+        "symfony/validator": "5.2.*",
         "symfony/yaml": "5.2.*",
-        "twig/intl-extra": "^3.3",
-        "ext-redis": "*",
-        "ext-json": "*"
+        "twig/intl-extra": "^3.3"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.5",

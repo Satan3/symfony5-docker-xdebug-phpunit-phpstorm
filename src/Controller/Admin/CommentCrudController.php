@@ -10,18 +10,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class CommentCrudController extends AbstractCrudController {
-    public static function getEntityFqcn(): string {
+class CommentCrudController extends AbstractCrudController
+{
+    public static function getEntityFqcn(): string
+    {
         return Comment::class;
     }
 
-
-    public function configureFields(string $pageName): iterable {
+    public function configureFields(string $pageName): iterable
+    {
         return [
             TextField::new('author'),
             TextareaField::new('text'),
             EmailField::new('email'),
-            DateTimeField::new('createdAt'),
             TextField::new('photoFileName'),
             AssociationField::new('conference')->setRequired(true),
         ];

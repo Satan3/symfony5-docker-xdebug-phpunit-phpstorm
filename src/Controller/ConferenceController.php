@@ -30,13 +30,13 @@ class ConferenceController extends AbstractController {
     }
 
     /**
-     * @Route("/conference/{id}", name="conference")
+     * @Route("/conference/{slug}", name="conference")
      * @param Request $request
-     * @param int $id
+     * @param string $slug
      * @return Response
      */
-    public function show(Request $request, int $id): Response {
-        if (!$conference = $this->conferenceRepository->find($id)) {
+    public function show(Request $request, string $slug): Response {
+        if (!$conference = $this->conferenceRepository->findOneBy(['slug' => $slug])) {
             throw $this->createNotFoundException();
         }
 
