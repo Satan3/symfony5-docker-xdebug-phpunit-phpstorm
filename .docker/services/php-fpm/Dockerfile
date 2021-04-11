@@ -1,5 +1,7 @@
 FROM php:7.3-fpm
 
+ENV PHPREDIS_VERSION 3.0.0
+
 RUN echo " --->> Install packages" \
     && apt-get clean && apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -13,11 +15,17 @@ RUN echo " --->> Install packages" \
         git \
     && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /usr/src/php/ext/redis
+
 RUN echo " --->> Install extensions" \
     && docker-php-ext-install intl soap pcntl pdo pdo_pgsql zip \
     && pecl install xdebug-2.9.8 \
     && pecl install pcov-1.0.6 \
-    && docker-php-ext-enable xdebug pcov
+    && docker-php-ext-enable xdebug pcov\
+    && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
+    && echo 'redis' >> /usr/src/php-available-exts \
+    && docker-php-ext-install redis
+
 
 RUN echo " --->> Install Symfony CLI" \
     && wget https://get.symfony.com/cli/installer -O - | bash \

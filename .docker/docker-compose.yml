@@ -40,6 +40,13 @@ services:
     networks:
       - app_net
 
+  redis:
+    container_name: redis
+    image: redis:5-alpine
+    ports: [6379]
+    networks:
+      - app_net
+
 networks:
   app_net:
     driver: bridge

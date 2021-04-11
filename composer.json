@@ -22,7 +22,9 @@
         "symfony/security-bundle": "5.2.*",
         "symfony/twig-pack": "^v1.0.1",
         "symfony/yaml": "5.2.*",
-        "twig/intl-extra": "^3.3"
+        "twig/intl-extra": "^3.3",
+        "ext-redis": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.5",
