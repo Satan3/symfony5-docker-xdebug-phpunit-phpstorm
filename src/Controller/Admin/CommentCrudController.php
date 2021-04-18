@@ -5,13 +5,16 @@ namespace App\Controller\Admin;
 use App\Entity\Comment;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CommentCrudController extends AbstractCrudController
 {
+    private const UPLOAD_PATH = '/uploads/photos';
+    private const ADMIN_UPLOAD_PATH = '/public/' . self::UPLOAD_PATH;
+
     public static function getEntityFqcn(): string
     {
         return Comment::class;
@@ -23,8 +26,11 @@ class CommentCrudController extends AbstractCrudController
             TextField::new('author'),
             TextareaField::new('text'),
             EmailField::new('email'),
-            TextField::new('photoFileName'),
-            AssociationField::new('conference')->setRequired(true),
+            ImageField::new('photoFileName', 'Photo')
+                ->setBasePath(self::UPLOAD_PATH)
+                ->setUploadDir(self::ADMIN_UPLOAD_PATH),
+            AssociationField::new('conference')
+                ->setRequired(true),
         ];
     }
 
