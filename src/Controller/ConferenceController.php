@@ -6,7 +6,9 @@ use App\Entity\Comment;
 use App\Form\CommentFormType;
 use App\Repository\CommentRepository;
 use App\Repository\ConferenceRepository;
+use App\SpamChecker;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,11 +51,16 @@ class ConferenceController extends AbstractController
      * @param Request $request
      * @param string $slug
      * @param string $photoDir
+     * @param SpamChecker $spamChecker
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
-    public function show(Request $request, string $slug, string $photoDir): Response
-    {
+    public function show(
+        Request $request,
+        string $slug,
+        string $photoDir,
+        SpamChecker $spamChecker
+    ): Response {
         if (!$conference = $this->conferenceRepository->findOneBy(['slug' => $slug])) {
             throw $this->createNotFoundException();
         }
@@ -72,6 +79,16 @@ class ConferenceController extends AbstractController
                 $comment->setPhotoFileName($filename);
             }
             $this->entityManager->persist($comment);
+
+            $context = [
+                'user_ip' => $request->getClientIp(),
+                'user_agent' => $request->headers->get('user_agent'),
+                'referrer' => $request->headers->get('referrer'),
+                'permalink' => $request->getUri(),
+            ];
+            if (2 === $spamChecker->getSpamScore($comment, $context)) {
+                throw new \RuntimeException('Blatant spam, go away!');
+            }
             $this->entityManager->flush();
 
             return $this->redirectToRoute('conference', ['slug' => $conference->getSlug()]);
